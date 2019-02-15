@@ -83,3 +83,19 @@ There is only one file generated in `target/surefire-reports`:
 # Created at 2019-02-15T20:04:24.258
 Error: Invalid or corrupt jarfile /app/target/surefire/surefirebooter15847623166706412603.jar
 ```
+
+## Observations and Workarounds
+
+- This error does not occur if the JVM forking behavior of Surefire is disabled:
+
+    ```xml
+    <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M3</version>
+        <configuration>
+            <forkCount>0</forkCount>
+        </configuration>
+    </plugin>
+    ```
+
+- Interestingly, the error does not happen when using an Ubuntu-based Docker image with JDK11 and Maven pre-installed (`adoptopenjdk/maven-openjdk11:latest`). See modified Dockerfile in `ubuntu-docker/Dockerfile`.
