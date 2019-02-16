@@ -88,30 +88,42 @@ Error: Invalid or corrupt jarfile /app/target/surefire/surefirebooter15847623166
 
 ## Observations and Workarounds
 
-- This error does not occur if the JVM forking behavior of Surefire is disabled:
+### 1. Disabling Forking
 
-    ```xml
-    <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
-        <configuration>
-            <forkCount>0</forkCount>
-        </configuration>
-    </plugin>
-    ```
+This error does not occur if the JVM forking behavior of Surefire is disabled:
 
-- Interestingly, the error does not happen when using an Ubuntu-based Docker image with JDK11 and Maven pre-installed (`adoptopenjdk/maven-openjdk11:latest`). See modified Dockerfile in `ubuntu-docker/Dockerfile`.
+```xml
+<plugin>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.0.0-M3</version>
+    <configuration>
+        <forkCount>0</forkCount>
+    </configuration>
+</plugin>
+```
 
-- An issue related to this is [carlossg/docker-maven#90](https://github.com/carlossg/docker-maven/issues/90), where the suggested workaround is to not use the system classloader of `maven-surefire-plugin`. Per their advice, the following configuration
+However, disabling forking is undesirable for the isolation (and speed) benefits it provides.
 
-    ```xml
-    <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
-        <configuration>
-            <useSystemClassLoader>false</useSystemClassLoader>
-        </configuration>
-    </plugin>
-    ```
+### 2. Using a Different Docker Image
+
+The Alpine Docker image used in the example is [adoptopenjdk/openjdk11:jdk-11.0.2.9-alpine](https://hub.docker.com/r/adoptopenjdk/openjdk11/), which reproduces the issue.
+
+However, switching the Docker image to an Ubuntu-based one (e.g. [adoptopenjdk/maven-openjdk11:latest](https://hub.docker.com/r/adoptopenjdk/maven-openjdk11/) makes the error go away. See modified Dockerfile in `ubuntu-docker/Dockerfile`.
+
+But perhaps most shocking is that switching to Azul Zulu OpenJDK image _still based on Alpine Linux_ [azul/zulu-openjdk-alpine:11](https://hub.docker.com/r/azul/zulu-openjdk-alpine) also makes the problem go away.
+
+### 3. Disabling System Class Loader in Surefire Plugin
+
+Another workaround for this issue, suggested in [carlossg/docker-maven#90](https://github.com/carlossg/docker-maven/issues/90), is to not use the system classloader of `maven-surefire-plugin`. Per their advice, the following configuration
+
+```xml
+<plugin>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.0.0-M3</version>
+    <configuration>
+        <useSystemClassLoader>false</useSystemClassLoader>
+    </configuration>
+</plugin>
+```
     
-    helps to remedy the Surefire failure.
+helps to remedy the Surefire failure.
