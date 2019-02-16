@@ -102,7 +102,7 @@ Error: Invalid or corrupt jarfile /app/target/surefire/surefirebooter15847623166
 
 - Interestingly, the error does not happen when using an Ubuntu-based Docker image with JDK11 and Maven pre-installed (`adoptopenjdk/maven-openjdk11:latest`). See modified Dockerfile in `ubuntu-docker/Dockerfile`.
 
-- An issue related to this is carlossg/docker-maven#90, where the suggested workaround is to not use the system classloader of `maven-surefire-plugin`. Per their advice, the following configuration
+- An issue related to this is [carlossg/docker-maven#90](https://github.com/carlossg/docker-maven/issues/90), where the suggested workaround is to not use the system classloader of `maven-surefire-plugin`. Per their advice, the following configuration
 
     ```xml
     <plugin>
