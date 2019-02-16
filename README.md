@@ -1,5 +1,7 @@
 # Surefire Plugin Failure in Alpine JDK11 Docker Container
 
+Link to StackOverflow question: https://stackoverflow.com/questions/54716967/maven-tests-fail-with-forked-vm-terminated-in-docker
+
 ## Steps to Reproduce
 
 Build and run the container:
