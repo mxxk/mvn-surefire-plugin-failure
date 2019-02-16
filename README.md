@@ -108,9 +108,9 @@ However, disabling forking is undesirable for the isolation (and speed) benefits
 
 The Alpine Docker image used in the example is [adoptopenjdk/openjdk11:jdk-11.0.2.9-alpine](https://hub.docker.com/r/adoptopenjdk/openjdk11/), which reproduces the issue.
 
-However, switching the Docker image to an Ubuntu-based one (e.g. [adoptopenjdk/maven-openjdk11:latest](https://hub.docker.com/r/adoptopenjdk/maven-openjdk11/) makes the error go away. See modified Dockerfile in `ubuntu-docker/Dockerfile`.
+However, switching the Docker image to an Ubuntu-based one (e.g. [adoptopenjdk/maven-openjdk11:latest](https://hub.docker.com/r/adoptopenjdk/maven-openjdk11/)) makes the error go away. See modified Dockerfile in `ubuntu-docker/Dockerfile`.
 
-But perhaps most shocking is that switching to Azul Zulu OpenJDK image _still based on Alpine Linux_ [azul/zulu-openjdk-alpine:11](https://hub.docker.com/r/azul/zulu-openjdk-alpine) also makes the problem go away.
+But perhaps most shocking is that switching to Azul Zulu OpenJDK image _still based on Alpine Linux_ ([azul/zulu-openjdk-alpine:11](https://hub.docker.com/r/azul/zulu-openjdk-alpine)) also makes the problem go away.
 
 ### 3. Disabling System Class Loader in Surefire Plugin
 
